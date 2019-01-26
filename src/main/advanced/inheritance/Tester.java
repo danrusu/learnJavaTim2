@@ -76,15 +76,18 @@ public class Tester {
     public void interface_test(){
         // Polymorphism
         // Object <- Vehicle <- Car
-        Car porsche = new Car(
+        Cleanable porsche = new Car(
                 "Porsche",
                 2 ,
                 "orange",
                 300);
 
         Drivable.start();
-        porsche.drive(50.5f);
-        porsche.stop();
+
+        ((Drivable)porsche).drive(50.5f);
+        //((Vehicle)porsche).stop(); wrong
+        ((Car)porsche).stop();
+
         porsche.clean("Premium");
     }
 
