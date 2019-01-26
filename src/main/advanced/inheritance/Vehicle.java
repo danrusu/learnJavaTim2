@@ -27,6 +27,10 @@ public class Vehicle {
         this.maxSpeed = maxSpeed;
     }
 
+    public static void printSeparator(){
+        System.out.println("--------------------");
+    }
+
     @Override
     public String toString() {
         return String.join(" | ",

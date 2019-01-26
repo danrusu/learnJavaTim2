@@ -1,5 +1,10 @@
 package main.advanced.inheritance;
 
+/*
+  A class can extend only one class.
+
+  A class can implement one or more interfaces.
+*/
 public class Car extends Vehicle
         implements Drivable, Cleanable{
 
@@ -32,13 +37,18 @@ public class Car extends Vehicle
 
     @Override
     public void drive(float distanceInKm) {
+
         System.out.println("drove " + distanceInKm + "km");
     }
-
 
     @Override
     public void clean(String cleanType) {
         System.out.println(
                 getName() + " cleaned " + cleanType);
+    }
+
+    //@Override // this is not an override; uncomment to see the compile error
+    public static void printSeparator(){
+        System.out.println("++++++++++++++++++++");
     }
 }

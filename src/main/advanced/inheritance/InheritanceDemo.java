@@ -2,7 +2,7 @@ package main.advanced.inheritance;
 
 import org.junit.jupiter.api.Test;
 
-public class Tester {
+public class InheritanceDemo {
 
     @Test
     public void encapsulation_test(){
@@ -82,6 +82,8 @@ public class Tester {
                 "orange",
                 300);
 
+        Vehicle.printSeparator();
+
         Drivable.start();
 
         ((Drivable)porsche).drive(50.5f);
@@ -89,6 +91,8 @@ public class Tester {
         ((Car)porsche).stop();
 
         porsche.clean("Premium");
+
+        Car.printSeparator();
     }
 
 }
