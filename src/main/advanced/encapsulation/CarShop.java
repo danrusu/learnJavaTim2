@@ -20,6 +20,4 @@ public class CarShop {
         System.out.println(cars);
     }
 
-
-
 }

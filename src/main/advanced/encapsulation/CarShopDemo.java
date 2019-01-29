@@ -3,9 +3,11 @@ package main.advanced.encapsulation;
 import main.advanced.inheritance.Car;
 import org.junit.jupiter.api.Test;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 // ENCAPSULATION DOES NOT MEAN IMMUTABILITY!
 public class CarShopDemo {
@@ -28,6 +30,7 @@ public class CarShopDemo {
 
         // change 1
         audi.color = "black";
+        audi = null;  // put new object in audi
         carShop.printCars();
 
         // change 2
