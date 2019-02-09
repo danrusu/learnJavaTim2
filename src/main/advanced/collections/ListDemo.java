@@ -31,28 +31,33 @@ public class ListDemo {
     }
 
     @Test
-    public void create_new_list_test(){
+    public void create_new_list_and_apply_methods_test(){
 
         List<String> names = new ArrayList<>();
 
         names.add("John"); // index 0
         names.add("Jane"); // index 1
         names.add("Jack"); // index 2
-
-        names.add(1, "Tom");
         System.out.println("Initial list: " + names);
+
+        System.out.println("add Tom at index 1");
+        names.add(1, "Tom");
+        System.out.println("List: " + names);
+
+        List<String> additionalNames = List.of("Maria", "Tania", "Adela");
+        System.out.println("Add additionalNames to names");
+        names.addAll(additionalNames);
+        System.out.println("List: " + names);
 
         System.out.println("Remove last element");
         String removedName = names.remove(names.size()-1);
-
-        System.out.println(names);
-
         System.out.println("Removed name: " + removedName);
 
+        System.out.println(names);
     }
 
     @Test
-    public void new_array_test(){
+    public void create_new_array_test(){
         String[] namesArray = new String[]{"John", "Jane", "Jack"};
         //namesArray[4] = "Tom"; // throws ArrayIndexOutOfBoundsException
         System.out.println("Length: " + namesArray.length);
@@ -88,7 +93,7 @@ public class ListDemo {
     }
     
     @Test
-    public void min_list_test(){
+    public void list_min_test(){
         List<Integer> numbers = List.of(
                 1, 40, 50 ,27,
                 4, -3, -9,  8,
@@ -108,7 +113,7 @@ public class ListDemo {
     }
 
     @Test
-    public void max_list_test(){
+    public void list_max_test(){
         List<Integer> numbers = List.of(
                 1, 40, 50 ,27,
                 4, -3, -9,  8,
@@ -126,7 +131,7 @@ public class ListDemo {
     }
 
     @Test
-    public void average_list_test(){
+    public void list_average_test(){
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         int sum = 0;
@@ -143,11 +148,16 @@ public class ListDemo {
         List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> emptyNumbers = List.of();
 
-        System.out.println("List 1..10 average: " + getAverage(numbers));
-        System.out.println("Empty list average: " + getAverage(emptyNumbers));
+        System.out.println("List 1..5 average: "
+                + getAverageForElementsUnderLimit(numbers, 6));
+
+        System.out.println("Empty list average: "
+                + getAverageForElementsUnderLimit(emptyNumbers, 6));
     }
 
-    private double getAverage(List<Integer> numbers) {
+    private double getAverageForElementsUnderLimit(
+            List<Integer> numbers,
+            int limit) {
         // algorithm exception first
         // (fail fast / throw fast)
         if (numbers.size() == 0){
@@ -158,7 +168,7 @@ public class ListDemo {
         int sum = 0;
 
         for(int number : numbers){
-            if(number < 6){
+            if(number < limit){
                 sum += number;
                 count++;
             }
