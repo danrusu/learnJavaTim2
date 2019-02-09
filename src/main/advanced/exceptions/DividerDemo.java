@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  * */
 public class DividerDemo {
 
-   /* @Test
+    @Test
     public void positive_test() throws Exception {
 
         final float result = new Divider(90, 5).getResult();
@@ -24,7 +24,7 @@ public class DividerDemo {
                 Exception.class,
                 () -> new Divider(90, 0).getResult());
     }
-*/
+
 
     @Test
     public void real_world_test() {
