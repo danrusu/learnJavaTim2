@@ -1,11 +1,10 @@
-package main.advanced.test_19_02_09;
+package skillsTest.test_19_02_09;
 
-import static main.advanced.test_19_02_09.Number.*;
+import static skillsTest.test_19_02_09.Number.*;
 import org.junit.jupiter.api.Test;/**/
 
 
 import java.util.Arrays;
-import java.util.List;
 
 public class NumberDemo {
 
