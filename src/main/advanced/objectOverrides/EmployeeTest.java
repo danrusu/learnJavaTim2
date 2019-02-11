@@ -75,6 +75,12 @@ public class EmployeeTest {
         Employee employee = new Employee("Dan", 37, AZETS);
         Employee employeeClone = (Employee)employee.clone();
 
+        System.out.println("employee hashCode: " + employee.hashCode());
+        System.out.println("employeeClone hashCode: " + employeeClone.hashCode());
+
+        System.out.println("Equals: " + employee.equals(employeeClone));
+
+
         System.out.println(employee == employeeClone);
         Assertions.assertFalse(employee == employeeClone);
     }
