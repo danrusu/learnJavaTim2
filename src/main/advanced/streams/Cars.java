@@ -1,8 +1,10 @@
 package main.advanced.streams;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static java.util.Comparator.comparing;
 import static main.advanced.streams.Cars.CarProducer.*;
 
 public class Cars {
@@ -52,6 +54,8 @@ public class Cars {
         public static Predicate<Car> isPorsche = car -> car.getCarProducer().equals(PORSCHE);
 
         public static Predicate<Car> isAudi = car ->  car.getCarProducer().equals(AUDI);
+
+        public static Comparator<Car> compareByPrice = comparing(Car::getPriceInEuro);
     }
 
     private List<Car> cars = List.of(

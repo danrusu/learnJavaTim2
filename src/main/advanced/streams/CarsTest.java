@@ -20,10 +20,6 @@ public class CarsTest {
 
     List<Car> cars = new Cars().getCars();
 
-    // Using the above list of Car (from main.advanced.streams.Cars)
-    // solve the following tasks (TODOs) using the java Stream API
-    // (you can also try a classic approach - for loops):
-
     @Test
     public void get_all_porsche_cars() {
 
@@ -42,6 +38,7 @@ public class CarsTest {
 
     @Test
     public void get_a_list_of_all_AUDI_cars() {
+
         List<Car> audiCars = cars.stream()
                 .filter(car -> car.getCarProducer().equals(AUDI))
                 .collect(toList());
@@ -52,7 +49,7 @@ public class CarsTest {
     @Test
     public void get_a_list_of_all_FORD_and_HONDA_cars() {
 
-        //Predicate<Car> isFordOrHonda = isFord.or(isHonda);
+        Predicate<Car> isFordOrHonda = isFord.or(isHonda);
 
         Predicate<Car> isNotAudiOrPorsche = isPorsche.negate()
                 .and(isAudi.negate());
@@ -60,9 +57,10 @@ public class CarsTest {
         Predicate<Car> isNotAudiOrPorsche_static = Predicate.not(isPorsche)
                 .and(Predicate.not(isAudi));
 
-
+        // isFordOrHonda, isNotAudiOrPorsche, isNotAudiOrPorsche_static - are the same filters
+        // replace next filter with any of the above filters to see the same result
         List<Car> fordsAndHondas = cars.stream()
-                .filter(isFord.or(isHonda))
+                .filter(isFordOrHonda)
                 .collect(toList());
 
         printList(fordsAndHondas);
@@ -70,7 +68,7 @@ public class CarsTest {
 
     @Test
     public void get_a_list_of_all_AUDI_models() {
-        //TODO
+
         List<String> audiModels = cars.stream() // stream of Car
                 .filter(isAudi) // stream of Car
                 .map(car -> car.getModelName())
@@ -82,7 +80,7 @@ public class CarsTest {
 
     @Test
     public void get_a_list_of_all_Ford_models_and_prices() {
-        //TODO
+
         // the list must look like: [ "Fiesta:11000.0", "Focus:21000.0", "Galaxy:35000.0" ]
         Function<Car, String> carToModelAndPrice = car ->
                 car.getModelName() + ":" + car.getPriceInEuro();
@@ -93,12 +91,11 @@ public class CarsTest {
                 .collect(toList());
 
         System.out.println(fordModelsAndPrices);
-        //printList(fordModelsAndPrices);
     }
 
     @Test
     public void get_a_collection_of_all_unique_CarProducers() {
-        //TODO
+
         Set<CarProducer> carProducersSet = cars.stream()
                 .map(Car::getCarProducer)
                 .collect(toSet());
@@ -113,27 +110,26 @@ public class CarsTest {
 
         System.out.println("\nList:");
         printList(carProducersList);
-
-
     }
 
     @Test
     public void get_a_string_with_all_unique_CarProducers_separated_by_space() {
-        //TODO
-        // hint: use Collectors.joining
+
         Set<String> carProducersSet = cars.stream()
                 .map(Car::getCarProducer)
                 //.map(carProducer -> carProducer.toString())
                 .map(CarProducer::toString)
                 .collect(toSet());
 
-        String carProducersString = carProducersSet.stream().collect(Collectors.joining(" "));
+        String carProducersString = carProducersSet.stream()
+                .collect(Collectors.joining(" "));
+
         System.out.println(carProducersString);
     }
 
     @Test
     public void get_a_collection_of_all_unique_CarProducers_that_have_cars_costing_over_100000_euro() {
-        //TODO
+
         Predicate<Car> pricerOver100k = car -> car.getPriceInEuro() > 100000;
         System.out.println(
                 cars.stream()
@@ -145,7 +141,7 @@ public class CarsTest {
 
     @Test
     public void get_one_of_the_cheapest_car() {
-        //TODO
+
         Double lowestPrice = cars.stream()
             .map(Car::getPriceInEuro) // stream of Double
             .mapToDouble(Double::doubleValue)
@@ -160,8 +156,6 @@ public class CarsTest {
 
     @Test
     public void get_cheapest_AUDI_car() {
-        //TODO
-        Comparator<Car> compareByPrice = comparing(Car::getPriceInEuro);
 
         Car cheapestAudiCar = cars.stream()
                 .filter(isAudi)
@@ -173,7 +167,7 @@ public class CarsTest {
 
     @Test
     public void get_Ford_models_cheaper_than_20000_euro() {
-        //TODO
+
         Predicate<Car> isCheaperThan20k = car -> car.getPriceInEuro() < 20000;
 
         System.out.println(
@@ -186,7 +180,7 @@ public class CarsTest {
 
     @Test
     public void get_the_most_expensive_car() {
-        //TODO
+
         Double highestPrice = cars.stream()
                 .mapToDouble(Car::getPriceInEuro) // DoubleStream (double primitives stream)
                 .max().getAsDouble();
@@ -200,7 +194,7 @@ public class CarsTest {
 
     @Test
     public void get_car_models_more_expensive_than_100000_euro() {
-        //TODO
+
         // the list must look like: [ "PORSCHE Panamera", "AUDI S8" ]
         System.out.println(
                 cars.stream()
@@ -208,13 +202,12 @@ public class CarsTest {
                     .map(car -> car.getCarProducer() + " " + car.getModelName())
                     .collect(toList())
         );
-
     }
 
     @Test
     public void get_the_most_expensive_HONDA_car() {
-        //TODO
-        Comparator<Car> compareByPriceDescending = comparing(Car::getPriceInEuro).reversed();
+
+        Comparator<Car> compareByPriceDescending = compareByPrice.reversed();
 
         Car mostExpensiveHonda = cars.stream()
                 .filter(isHonda)
@@ -226,8 +219,6 @@ public class CarsTest {
 
     @Test
     public void get_the_most_expensive_AUDI_price() {
-        //TODO
-        Comparator<Car> compareByPrice = comparing(Car::getPriceInEuro);
 
         Car mostExpensiveAudiCar = cars.stream()
                 .filter(isAudi)
@@ -239,36 +230,43 @@ public class CarsTest {
 
     @Test
     public void get_the_most_expensive_AUDI_model() {
-        //TODO
-        // look upper
+
+        Car mostExpensiveAudiCar = cars.stream()
+                .filter(isAudi)
+                .sorted(compareByPrice.reversed())
+                .findFirst().get();
+
+        System.out.println(mostExpensiveAudiCar.getPriceInEuro());
     }
 
     @Test
     public void get_prices_average() {
-        //TODO
-        System.out.println(
-                cars.stream()
-                    .mapToDouble(Car::getPriceInEuro)
-                    .average().getAsDouble());
+
+        double pricesAverage = cars.stream()
+                .mapToDouble(Car::getPriceInEuro)
+                .average().getAsDouble();
+
+        System.out.println(pricesAverage);
     }
 
     @Test
     public void get_AUDI_prices_average() {
-        //TODO
-        System.out.println(
-                cars.stream()
-                        .filter(isAudi)
-                        .mapToDouble(Car::getPriceInEuro)
-                        .average().getAsDouble());
+
+        double audiPricesAverage = cars.stream()
+                .filter(isAudi)
+                .mapToDouble(Car::getPriceInEuro)
+                .average().getAsDouble();
+
+        System.out.println(audiPricesAverage);
     }
 
     @Test
     public void get_a_list_with_car_counts_for_each_CarProducer() {
-        //TODO
+
         Map<String, Long> carCountByCarProducer = cars.stream()
                 .collect(Collectors.groupingBy(
-                        Car::getModelName, // key supplier - Supplier<CarProducer>
-                        Collectors.counting()   // value reducer
+                        Car::getModelName,     // classifier
+                        Collectors.counting()  // downstream
                 ));
 
         System.out.println(carCountByCarProducer);
@@ -276,18 +274,22 @@ public class CarsTest {
         System.out.println("Counts: " + carCountByCarProducer.values());
     }
 
-/*    @Test
+    @Test
     public void get_a_list_with_prices_average_for_each_CarProducer() {
-        //TODO
+
         Map<CarProducer, Double> pricesAverageByCarProducer = cars.stream()
                 .collect(Collectors.groupingBy(
-                    Car::getCarProducer,
-                    Collectors.averagingDouble(Double::doubleValue)));
-    }*/
+                    Car::getCarProducer,                                // classifier (key)
+                    Collectors.averagingDouble(Car::getPriceInEuro)));  // downstream (value)
+
+        System.out.println(pricesAverageByCarProducer);
+    }
 
     private void printList(Collection<?> cars) {
+
         //cars.stream().forEach(System.out::println);
         //cars.forEach(System.out::println);
+
         // Consumer<Car> lamba: Car -> void
         cars.forEach(
                 car -> System.out.println(car)
