@@ -2,7 +2,9 @@ package main.advanced.streams;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -92,4 +94,41 @@ public class StreamsTest{
 
         System.out.println(supplier.get());
     }
+
+    @Test
+    public void test_stream_concatenation(){
+
+        List<Integer> numberList1 = List.of(
+                1, 2, 3, 8, 4, 2, 5, 5);
+        Stream<Integer> numbersStream1 = numberList1.stream();
+        System.out.println("Stream 1 size:" + numberList1.size());
+
+        List<Integer> numberList2 = List.of(
+                4, 6, 7, 8, 9, 3, 2, 4, 56, 78, 8, 89);
+        Stream<Integer> numbersStream2 = numberList2.stream();
+        System.out.println("Stream 2 size:" + numberList2.size());
+
+        //task: get a list of numbers from numbersStream1 and numbersStream2
+        List<Integer> allNumbers = new ArrayList<>();
+
+        //numbersStream1.forEach(number -> all.add(number));
+        numbersStream1.forEach(allNumbers::add);
+        numbersStream2.forEach(allNumbers::add);
+        System.out.println("allNumbers size:" + allNumbers.size());
+
+        System.out.println(allNumbers);
+
+        // stream concatenation
+        Stream<Stream<Integer>> allIntegersStream = Stream.of(
+                numberList1.stream(), //Stream<Integer>
+                numberList2.stream()); //Stream<Integer>
+
+        List<Integer> allIntegersList = allIntegersStream
+                .flatMap(Function.identity())
+                //.flatMap(i -> i)
+                .collect(Collectors.toList());
+
+        System.out.println(allIntegersList);
+    }
+
 }

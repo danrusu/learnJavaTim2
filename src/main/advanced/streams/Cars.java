@@ -1,6 +1,7 @@
 package main.advanced.streams;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import static main.advanced.streams.Cars.CarProducer.*;
 
@@ -40,9 +41,17 @@ public class Cars {
         public String toString() {
             return String.join(" | ",
                     carProducer.name(),
-                    priceInEuro + "",
-                    modelName);
+                    modelName,
+                    priceInEuro + "");
         }
+
+        public static Predicate<Car> isFord = car -> car.getCarProducer().equals(FORD);
+
+        public static Predicate<Car> isHonda = car ->  car.getCarProducer().equals(HONDA);
+
+        public static Predicate<Car> isPorsche = car -> car.getCarProducer().equals(PORSCHE);
+
+        public static Predicate<Car> isAudi = car ->  car.getCarProducer().equals(AUDI);
     }
 
     private List<Car> cars = List.of(
