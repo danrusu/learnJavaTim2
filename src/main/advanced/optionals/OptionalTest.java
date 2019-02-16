@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 import static main.advanced.streams.Cars.Car;
 import static main.advanced.streams.Cars.CarProducer.*;
 
-
+/*You can see an Optional as a stream with one or no element within.
+You can have Optionals of objects or of primitives.
+*/
 public class OptionalTest {
 
     String text;
@@ -26,28 +29,38 @@ public class OptionalTest {
         System.out.println(upperCaseTest);
     }
 
-    private String getFirstWord(List<String> words, String defaultText){
+    @Test
+    public void primitive_optionl_test(){
+
+        double doubleNumber = 100d;
+        OptionalDouble optionalDouble = OptionalDouble.of(doubleNumber);
+
+        double optionalContent = optionalDouble.getAsDouble();
+        System.out.println(optionalContent);
+    }
+
+    private String getFirstWordOrDefaultText(List<String> words, String defaultText){
 
         return words.stream().findFirst().orElse(defaultText);
     }
 
     @Test
     public void test_empty() {
-        String firstWordNotEmpty = getFirstWord(
+
+        String firstWordNotEmpty = getFirstWordOrDefaultText(
                 List.of("one", "two", "apple"),
                 "");
         System.out.println(firstWordNotEmpty);
 
-        String firstWord = getFirstWord(
+        String firstWord = getFirstWordOrDefaultText(
                 List.of(),
                 "no word");
         System.out.println(firstWord);
 
-        System.out.println(getFirstWord(
+        System.out.println(getFirstWordOrDefaultText(
                 Collections.emptyList(),
                 "eeempty"));
     }
-
 
     @Test
     public void test_optional_methods(){
@@ -68,6 +81,10 @@ public class OptionalTest {
         System.out.println(carGarage.get());
         emptyCarGarage.ifPresent(System.out::println); // will not print anything
 
+        emptyCarGarage.ifPresentOrElse(
+                System.out::println,
+                () -> System.out.println("empty garage"));
+
  /*
  From Optional:
 
@@ -79,11 +96,6 @@ public class OptionalTest {
             }
         }
         */
-
-        emptyCarGarage.ifPresentOrElse(
-                System.out::println,
-                () -> System.out.println("empty garage"));
-
     }
 
 }
