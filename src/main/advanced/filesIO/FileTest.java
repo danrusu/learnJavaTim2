@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class FileTest {
 
     public static void main(String[] args) throws IOException {
@@ -23,7 +25,6 @@ public class FileTest {
                 "english_words.txt"
         );
 
-
         String path = "C:\\Users\\dan.rusu.IN\\Desktop\\SDA\\learnJavaTim2\\Resource\\Dictionary\\english_words.txt";
 
         System.out.println("\n\nEnglish words path: \n"
@@ -31,12 +32,14 @@ public class FileTest {
 
         List<String> lines = Files.readAllLines(englishWordsPath);
 
-        final Predicate<String> isEmptyLine = line -> line.isEmpty();
+        //final Predicate<String> isEmptyLine = line -> line.isEmpty();
+        final Predicate<String> isEmptyLine = String::isEmpty;
         final Predicate<String> isLineCommented = line -> line.startsWith("//");
+
         List<String> validLines = lines.stream()
                 .filter(isEmptyLine.negate())
                 .filter(isLineCommented.negate())
-                .collect(Collectors.toList());
+                .collect(toList());
 
         validLines.forEach(System.out::println);
 
