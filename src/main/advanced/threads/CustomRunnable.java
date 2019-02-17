@@ -12,7 +12,7 @@ public class CustomRunnable implements Runnable {
                 e.printStackTrace();
             }
 
-            System.out.println(ThreadsTest.printCurrentThreadInfo() + i);
+            System.out.println(ThreadsTest.getCurrentThreadInfo() + i);
         }
     }
 }

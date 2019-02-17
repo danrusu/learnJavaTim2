@@ -5,7 +5,7 @@ public class ThreadsTest {
 
     public static void main(String[] args) throws InterruptedException {
 
-        System.out.println(printCurrentThreadInfo() + "Start main thread");
+        System.out.println(getCurrentThreadInfo() + "Start main thread");
 
 
         // new thread method 1
@@ -19,17 +19,16 @@ public class ThreadsTest {
 
         Thread.sleep(3000);
 
-        System.out.println(printCurrentThreadInfo() + "Stop main thread");
+        System.out.println(getCurrentThreadInfo() + "Stop main thread");
     }
 
-    public static String printCurrentThreadInfo() {
+    public static String getCurrentThreadInfo() {
+
         Thread currentThread = Thread.currentThread();
         return String.join(" | ",
                 currentThread.getName(),
-                currentThread.getId() + "",
+                "tid=" + currentThread.getId(),
                 ""
         );
     }
-
-
 }

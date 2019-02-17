@@ -14,7 +14,7 @@ public class CustomThread1 extends Thread {
                 e.printStackTrace();
             }
 
-            System.out.println(ThreadsTest.printCurrentThreadInfo() + i);
+            System.out.println(ThreadsTest.getCurrentThreadInfo() + i);
         }
 
         System.out.println("Stop CustomThread1 thread");

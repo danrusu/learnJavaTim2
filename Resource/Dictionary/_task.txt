@@ -1,0 +1,4 @@
+Using the english_words.txt and romanian_words.txt
+create an application that can translate from English text to Romanian
+(can translate only for words that are enumerated in above files separated by spaces).
+

@@ -3,13 +3,12 @@ package main.advanced.streams;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 import static main.advanced.streams.Cars.Car;
 import static main.advanced.streams.Cars.Car.*;
 import static main.advanced.streams.Cars.CarProducer;
@@ -122,7 +121,7 @@ public class CarsTest {
                 .collect(toSet());
 
         String carProducersString = carProducersSet.stream()
-                .collect(Collectors.joining(" "));
+                .collect(joining(" "));
 
         System.out.println(carProducersString);
     }
@@ -133,9 +132,9 @@ public class CarsTest {
         Predicate<Car> pricerOver100k = car -> car.getPriceInEuro() > 100000;
         System.out.println(
                 cars.stream()
-                    .filter(pricerOver100k)
-                    .map(Car::getCarProducer)
-                    .collect(toSet())
+                        .filter(pricerOver100k)
+                        .map(Car::getCarProducer)
+                        .collect(toSet())
         );
     }
 
@@ -143,9 +142,9 @@ public class CarsTest {
     public void get_one_of_the_cheapest_car() {
 
         Double lowestPrice = cars.stream()
-            .map(Car::getPriceInEuro) // stream of Double
-            .mapToDouble(Double::doubleValue)
-            .min().getAsDouble();
+                .map(Car::getPriceInEuro) // stream of Double
+                .mapToDouble(Double::doubleValue)
+                .min().getAsDouble();
 
         Car cheapestCar = cars.stream()
                 .filter(car -> car.getPriceInEuro() == lowestPrice)
@@ -172,9 +171,9 @@ public class CarsTest {
 
         System.out.println(
                 cars.stream()
-                    .filter(isFord.and(isCheaperThan20k))
-                    .map(Car::getModelName)
-                    .collect(toList())
+                        .filter(isFord.and(isCheaperThan20k))
+                        .map(Car::getModelName)
+                        .collect(toList())
         );
     }
 
@@ -198,9 +197,9 @@ public class CarsTest {
         // the list must look like: [ "PORSCHE Panamera", "AUDI S8" ]
         System.out.println(
                 cars.stream()
-                    .filter(car -> car.getPriceInEuro() > 100000)
-                    .map(car -> car.getCarProducer() + " " + car.getModelName())
-                    .collect(toList())
+                        .filter(car -> car.getPriceInEuro() > 100000)
+                        .map(car -> car.getCarProducer() + " " + car.getModelName())
+                        .collect(toList())
         );
     }
 
@@ -264,9 +263,9 @@ public class CarsTest {
     public void get_a_list_with_car_counts_for_each_CarProducer() {
 
         Map<String, Long> carCountByCarProducer = cars.stream()
-                .collect(Collectors.groupingBy(
+                .collect(groupingBy(
                         Car::getModelName,     // classifier
-                        Collectors.counting()  // downstream
+                        counting()  // downstream
                 ));
 
         System.out.println(carCountByCarProducer);
@@ -278,11 +277,78 @@ public class CarsTest {
     public void get_a_list_with_prices_average_for_each_CarProducer() {
 
         Map<CarProducer, Double> pricesAverageByCarProducer = cars.stream()
-                .collect(Collectors.groupingBy(
-                    Car::getCarProducer,                                // classifier (key)
-                    Collectors.averagingDouble(Car::getPriceInEuro)));  // downstream (value)
+                .collect(groupingBy(
+                        Car::getCarProducer,                    // classifier (key)
+                        averagingDouble(Car::getPriceInEuro))); // downstream (value)
 
         System.out.println(pricesAverageByCarProducer);
+    }
+
+    @Test
+    public void get_partitions_of_cars_for_50000euro_price() {
+        Map<Boolean, List<Car>> partitions = cars.stream()
+                .collect(partitioningBy(
+                        car -> car.getPriceInEuro() > 50000
+                ));
+
+        printMap(partitions);
+    }
+
+
+    @Test
+    public void numbers_partition_test(){
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        Predicate<Integer> biggerThan4 = number -> number > 4;
+
+        Map<Boolean, List<Integer>> partitions = numbers.stream()
+                .collect(partitioningBy(
+                        biggerThan4
+                ));
+
+        System.out.println(partitions);
+
+        System.out.println("Numbers > 4:" + partitions.get(true));
+        System.out.println("Numbers <= 4:" + partitions.get(false));
+    }
+
+    @Test
+    public void get_partitions_of_cars_for_80000euro_grouped_byName() {
+
+        final Predicate<Car> isPriceBiggerThan80k = car -> car.getPriceInEuro() > 80000;
+
+        Map<Boolean, Map<CarProducer, List<Car>>> groupedPartitions = cars.stream()
+                .collect(partitioningBy(
+                        isPriceBiggerThan80k,
+                        groupingBy(Car::getCarProducer)
+                ));
+
+        printMap(groupedPartitions);
+
+        System.out.println("\nOver 80K\n");
+
+        // print Cars producers which have cars over 80K
+        final Map<CarProducer, List<Car>> carProducerOver80k = groupedPartitions.get(true);
+        System.out.println(carProducerOver80k.keySet());
+        System.out.println();
+
+        System.out.println("Models over 80k:");
+        Collection<List<Car>> carListsOver80k = groupedPartitions.get(true).values();
+        Consumer<Car> printCarModel = car -> System.out.println(car.getModelName());
+
+        carListsOver80k.forEach(
+                carsList -> carsList.forEach(printCarModel));
+        System.out.println();
+
+        // print cars over 80K
+        System.out.println(groupedPartitions.get(true).values());
+
+        System.out.println("\nUnder 80K\n");
+        // print Cars producers which have cars under 80K
+        System.out.println(groupedPartitions.get(false).keySet());
+        System.out.println();
+        // print cars under 80K
+        System.out.println(groupedPartitions.get(false).values());
     }
 
     private void printList(Collection<?> cars) {
@@ -294,5 +360,11 @@ public class CarsTest {
         cars.forEach(
                 car -> System.out.println(car)
         );
+    }
+
+    private void printMap(Map<?, ?> map) {
+        map.entrySet().stream()
+                .forEach(entry -> System.out.println(
+                        entry.getKey() + " = " + entry.getValue()));
     }
 }
