@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
 public class FileTest {
 
     public static void main(String[] args) throws IOException {
+
         String userDir = System.getProperty("user.dir");
 
         Path englishWordsPath = Paths.get(
@@ -25,14 +25,18 @@ public class FileTest {
                 "english_words.txt"
         );
 
+        // 1. Copy full path click or open english_words.txt and CTRL + SHIFT + C
+        // 2. Paste full path
         String path = "C:\\Users\\dan.rusu.IN\\Desktop\\SDA\\learnJavaTim2\\Resource\\Dictionary\\english_words.txt";
+
+        System.out.println(path.equals(englishWordsPath));
 
         System.out.println("\n\nEnglish words path: \n"
                 + englishWordsPath);
 
         List<String> lines = Files.readAllLines(englishWordsPath);
 
-        //final Predicate<String> isEmptyLine = line -> line.isEmpty();
+        // final Predicate<String> isEmptyLine = line -> line.isEmpty();
         final Predicate<String> isEmptyLine = String::isEmpty;
         final Predicate<String> isLineCommented = line -> line.startsWith("//");
 

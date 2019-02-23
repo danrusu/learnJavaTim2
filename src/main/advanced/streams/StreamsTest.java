@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
+
 public class StreamsTest{
 
     @Test
@@ -24,7 +26,7 @@ public class StreamsTest{
                 .mapToObj(i -> i) // Stream<Integer>
                 //.map(integer -> integer.doubleValue())
                 .map(Integer::doubleValue)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         System.out.println(doubles1To10);
     }
@@ -41,6 +43,7 @@ public class StreamsTest{
     public void peek_test(){
         int sum = IntStream.rangeClosed(1, 10)
                 .peek(intValue -> System.out.println(intValue))
+                //.peek(System.out::println)
                 .sum();
 
         System.out.println("Sum: " + sum);
@@ -126,7 +129,7 @@ public class StreamsTest{
         List<Integer> allIntegersList = allIntegersStream
                 .flatMap(Function.identity())
                 //.flatMap(i -> i)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         System.out.println(allIntegersList);
     }
